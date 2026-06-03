@@ -1,73 +1,25 @@
-# React + TypeScript + Vite
+# Passeios — LEO Clube Ômega
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Site dos passeios e excursões do **LEO Clube Ômega Pinhalzinho-SC**. Apresenta os passeios disponíveis em cards e permite a inscrição direto na página, com modal de cadastro e confirmação visual.
 
-Currently, two official plugins are available:
+**No ar:** https://passeiosconfepzo.ascorp.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## O que tem
 
-## React Compiler
+- Listagem de passeios em cards (`PasseioCard`).
+- Modal de inscrição com validação (`InscricaoModal`) e overlay de sucesso (`SuccessOverlay`).
+- Hero e layout responsivo.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the ESLint configuration
+React 19 + TypeScript + Vite, estilos em CSS.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Desenvolvimento
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+bun install
+bun run dev       # servidor de desenvolvimento
+bun run build     # type-check + build de produção
+bun run preview   # pré-visualizar o build
+bun run lint      # eslint
 ```
