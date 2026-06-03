@@ -1,0 +1,11 @@
+node_modules
+dist
+.git
+.asset-backup
+*.log
+
+# IMPORTANTE: não copiar .env para a imagem.
+# O .env local tem VITE_API_URL=localhost:3000 e o Vite o usaria no build,
+# sobrescrevendo o build arg de produção. A URL de prod deve vir do ARG/ENV.
+.env
+.env.*
