@@ -1,7 +1,15 @@
 import { useEffect } from 'react'
 import type { InscricaoResultado } from '../lib/api'
 
-const WHATSAPP_GRUPO = 'https://chat.whatsapp.com/LbofnHxAZ8P6DiSdCcrdkq'
+// Grupo de WhatsApp por passeio (chave = slug do passeio).
+const WHATSAPP_GRUPOS: Record<string, string> = {
+  'planetario': 'https://chat.whatsapp.com/LbofnHxAZ8P6DiSdCcrdkq',
+  'defesa-pessoal': 'https://chat.whatsapp.com/EDEw7oAfWrFAYiL40n0eNY',
+  'primeiros-socorros': 'https://chat.whatsapp.com/KQ9ngmUwGvQHL2RhRfG4xY',
+}
+
+// Usado caso surja um passeio sem grupo próprio cadastrado acima.
+const WHATSAPP_FALLBACK = 'https://chat.whatsapp.com/LbofnHxAZ8P6DiSdCcrdkq'
 
 type Props = {
   resultado: InscricaoResultado
@@ -9,6 +17,8 @@ type Props = {
 }
 
 export function SuccessOverlay({ resultado, onClose }: Props) {
+  const whatsappGrupo = WHATSAPP_GRUPOS[resultado.passeio.slug] ?? WHATSAPP_FALLBACK
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -23,7 +33,7 @@ export function SuccessOverlay({ resultado, onClose }: Props) {
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true">
-      <div className="modal">
+      <div className="modal-panel">
         <span className="modal-corner tl" />
         <span className="modal-corner tr" />
         <span className="modal-corner bl" />
@@ -45,7 +55,7 @@ export function SuccessOverlay({ resultado, onClose }: Props) {
           <div className="success-actions">
             <a
               className="btn btn-primary"
-              href={WHATSAPP_GRUPO}
+              href={whatsappGrupo}
               target="_blank"
               rel="noopener noreferrer"
             >

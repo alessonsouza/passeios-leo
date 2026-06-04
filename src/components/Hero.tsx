@@ -9,6 +9,10 @@ export function Hero() {
       <div className="hero-divider">
         <span className="hero-divider-icon">✦</span>
       </div>
+      <p className="hero-free">
+        <span className="hero-free-icon" aria-hidden="true">✦</span>
+        Inscrição 100% gratuita
+      </p>
       <p className="hero-subtitle">
         Escolha um dos três passeios exclusivos preparados para os companheiros LEO.
         Cada participante pode escolher apenas uma atividade - garanta sua vaga antes que esgotem.
