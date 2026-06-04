@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api, ApiError, type Clube, type Passeio, type InscricaoResultado } from '../lib/api'
+import { formatCpf, isValidCpf, onlyDigits } from '../lib/cpf'
 
 type Props = {
   passeio: Passeio
@@ -10,8 +11,10 @@ type Props = {
 
 export function InscricaoModal({ passeio, clubes, onClose, onSuccess }: Props) {
   const [nome, setNome] = useState('')
+  const [cpf, setCpf] = useState('')
   const [clubeId, setClubeId] = useState('')
   const [erroNome, setErroNome] = useState<string | null>(null)
+  const [erroCpf, setErroCpf] = useState<string | null>(null)
   const [erroClube, setErroClube] = useState<string | null>(null)
   const [erroServidor, setErroServidor] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -40,10 +43,12 @@ export function InscricaoModal({ passeio, clubes, onClose, onSuccess }: Props) {
     setErroServidor(null)
 
     const nomeErr = validarNome(nome)
+    const cpfErr = isValidCpf(cpf) ? null : 'Informe um CPF válido'
     const clubeErr = clubeId ? null : 'Selecione seu clube'
     setErroNome(nomeErr)
+    setErroCpf(cpfErr)
     setErroClube(clubeErr)
-    if (nomeErr || clubeErr) return
+    if (nomeErr || cpfErr || clubeErr) return
 
     setLoading(true)
     try {
@@ -51,6 +56,7 @@ export function InscricaoModal({ passeio, clubes, onClose, onSuccess }: Props) {
         passeioId: passeio.id,
         clubeId,
         nomeCompleto: nome,
+        cpf: onlyDigits(cpf),
       })
       onSuccess(resultado)
     } catch (err) {
@@ -62,7 +68,7 @@ export function InscricaoModal({ passeio, clubes, onClose, onSuccess }: Props) {
 
   return (
     <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
         <span className="modal-corner tl" />
         <span className="modal-corner tr" />
         <span className="modal-corner bl" />
@@ -79,6 +85,7 @@ export function InscricaoModal({ passeio, clubes, onClose, onSuccess }: Props) {
 
         <p className="modal-eyebrow">Inscrição - {passeio.nome}</p>
         <h2 className="modal-title">Confirme seus dados</h2>
+        <p className="modal-free">A inscrição é <strong>gratuita</strong>.</p>
 
         {erroServidor && <div className="modal-error">{erroServidor}</div>}
 
@@ -91,12 +98,33 @@ export function InscricaoModal({ passeio, clubes, onClose, onSuccess }: Props) {
               className="input"
               value={nome}
               onChange={(e) => { setNome(e.target.value); setErroNome(null) }}
-              autoComplete="name"
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
               autoFocus
               disabled={loading}
               maxLength={200}
             />
             {erroNome && <p className="error-msg">{erroNome}</p>}
+          </div>
+
+          <div className="field">
+            <label className="label" htmlFor="cpf">CPF</label>
+            <input
+              id="cpf"
+              type="text"
+              className="input"
+              value={cpf}
+              onChange={(e) => { setCpf(formatCpf(e.target.value)); setErroCpf(null) }}
+              inputMode="numeric"
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              placeholder="000.000.000-00"
+              disabled={loading}
+              maxLength={14}
+            />
+            {erroCpf && <p className="error-msg">{erroCpf}</p>}
           </div>
 
           <div className="field">
@@ -106,6 +134,9 @@ export function InscricaoModal({ passeio, clubes, onClose, onSuccess }: Props) {
               className="select"
               value={clubeId}
               onChange={(e) => { setClubeId(e.target.value); setErroClube(null) }}
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
               disabled={loading}
             >
               <option value="">Selecione um clube…</option>

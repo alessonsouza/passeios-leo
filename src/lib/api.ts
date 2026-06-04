@@ -67,6 +67,6 @@ async function parse<T>(res: Response): Promise<T> {
 export const api = {
   listarPasseios: () => rpcQuery<Passeio[]>('passeios.listarPasseios'),
   listarClubes: () => rpcQuery<Clube[]>('passeios.listarClubes'),
-  inscrever: (input: { passeioId: string; clubeId: string; nomeCompleto: string }) =>
+  inscrever: (input: { passeioId: string; clubeId: string; nomeCompleto: string; cpf: string }) =>
     rpcMutation<InscricaoResultado>('passeios.inscrever', input),
 }
