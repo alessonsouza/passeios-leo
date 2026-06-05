@@ -422,14 +422,60 @@ button {
   margin-bottom: 14px;
 }
 
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
 .card-desc {
   font-family: var(--sans);
   font-size: 16px;
   color: var(--mute);
   line-height: 1.65;
-  flex: 1;
-  margin-bottom: 28px;
   white-space: pre-line;
+}
+
+.card-aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: auto;
+  padding: 13px 15px;
+  border: 1px solid var(--champagne-dim);
+  background: rgba(201, 169, 110, 0.07);
+  text-align: left;
+}
+
+.card-aviso-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--champagne);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--champagne);
+  background: rgba(201, 169, 110, 0.1);
+}
+
+.card-aviso-text {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ivory-soft);
+}
+
+.card-aviso-text strong {
+  color: var(--champagne);
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .card-vagas {

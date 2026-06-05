@@ -8,9 +8,22 @@ type Props = {
   onInscrever: (passeio: Passeio) => void
 }
 
+// Separa parágrafos comuns de um eventual parágrafo de aviso ("Atenção: ...").
+function splitDescricao(descricao: string | null): { corpo: string; aviso: string | null } {
+  if (!descricao) return { corpo: '', aviso: null }
+  const paragrafos = descricao.split(/\n{2,}/)
+  const avisoRegex = /^\s*aten[çc][ãa]o\s*:\s*/i
+  const avisoIdx = paragrafos.findIndex((p) => avisoRegex.test(p))
+  if (avisoIdx === -1) return { corpo: descricao, aviso: null }
+  const aviso = paragrafos[avisoIdx]!.replace(avisoRegex, '').trim()
+  const corpo = paragrafos.filter((_, i) => i !== avisoIdx).join('\n\n')
+  return { corpo, aviso }
+}
+
 export function PasseioCard({ passeio, index, onInscrever }: Props) {
   const { nome, descricao, limiteVagas, inscritos, vagasRestantes, esgotado } = passeio
   const pct = Math.min(1, inscritos / limiteVagas)
+  const { corpo, aviso } = splitDescricao(descricao)
 
   return (
     <article
@@ -24,7 +37,16 @@ export function PasseioCard({ passeio, index, onInscrever }: Props) {
 
       <span className="card-number">{NUMERAL[index] ?? `${index + 1}`}</span>
       <h2 className="card-title">{nome}</h2>
-      <p className="card-desc">{descricao}</p>
+
+      <div className="card-body">
+        {corpo && <p className="card-desc">{corpo}</p>}
+        {aviso && (
+          <div className="card-aviso" role="note">
+            <span className="card-aviso-icon" aria-hidden="true">!</span>
+            <p className="card-aviso-text"><strong>Atenção:</strong> {aviso}</p>
+          </div>
+        )}
+      </div>
 
       <div className="card-vagas">
         <span className={`card-vagas-num ${esgotado ? 'full' : ''}`}>
