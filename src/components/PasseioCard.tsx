@@ -5,6 +5,7 @@ const NUMERAL = ['I', 'II', 'III', 'IV', 'V']
 type Props = {
   passeio: Passeio
   index: number
+  encerrado?: boolean
   onInscrever: (passeio: Passeio) => void
 }
 
@@ -20,7 +21,7 @@ function splitDescricao(descricao: string | null): { corpo: string; aviso: strin
   return { corpo, aviso }
 }
 
-export function PasseioCard({ passeio, index, onInscrever }: Props) {
+export function PasseioCard({ passeio, index, encerrado = false, onInscrever }: Props) {
   const { nome, descricao, limiteVagas, inscritos, vagasRestantes, esgotado } = passeio
   const pct = Math.min(1, inscritos / limiteVagas)
   const { corpo, aviso } = splitDescricao(descricao)
@@ -62,7 +63,9 @@ export function PasseioCard({ passeio, index, onInscrever }: Props) {
         <div className="card-bar-fill" style={{ transform: `scaleX(${pct})` }} />
       </div>
 
-      {esgotado ? (
+      {encerrado ? (
+        <span className="badge-esgotado">Inscrições encerradas</span>
+      ) : esgotado ? (
         <span className="badge-esgotado">Esgotado</span>
       ) : (
         <button
