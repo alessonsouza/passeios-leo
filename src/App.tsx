@@ -5,6 +5,9 @@ import { InscricaoModal } from './components/InscricaoModal'
 import { SuccessOverlay } from './components/SuccessOverlay'
 import { api, type Passeio, type Clube, type InscricaoResultado } from './lib/api'
 
+// Inscrições encerradas: bloqueia os botões e exibe o aviso geral.
+const INSCRICOES_ENCERRADAS = true
+
 function App() {
   const [passeios, setPasseios] = useState<Passeio[] | null>(null)
   const [clubes, setClubes] = useState<Clube[]>([])
@@ -41,6 +44,16 @@ function App() {
         <section className="passeios-section">
           <p className="section-label">- Atividades disponíveis -</p>
 
+          {INSCRICOES_ENCERRADAS && (
+            <div className="aviso-encerrado" role="status">
+              <span className="aviso-encerrado-icon" aria-hidden="true">!</span>
+              <p className="aviso-encerrado-text">
+                <strong>Inscrições encerradas.</strong> As inscrições para os passeios foram
+                encerradas. Obrigado a todos que participaram!
+              </p>
+            </div>
+          )}
+
           {erroFetch && (
             <div className="modal-error" style={{ maxWidth: 480, margin: '0 auto' }}>
               {erroFetch}
@@ -56,6 +69,7 @@ function App() {
                   key={p.id}
                   passeio={p}
                   index={i}
+                  encerrado={INSCRICOES_ENCERRADAS}
                   onInscrever={setSelecionado}
                 />
               ))}
